@@ -1,0 +1,13 @@
+# Netlify configuration for the SaraStackLabs Next.js site.
+# The official Next.js Runtime handles SSR, the /api/inquiry function, and
+# next/image optimization automatically.
+
+[build]
+  command = "next build"
+  publish = ".next"
+
+[build.environment]
+  NODE_VERSION = "20"
+
+[[plugins]]
+  package = "@netlify/plugin-nextjs"
