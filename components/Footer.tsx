@@ -1,6 +1,7 @@
 import Link from "next/link";
-import { company } from "@/config/site";
-import { categories } from "@/content/categories";
+import { company, nav } from "@/config/site";
+import { products } from "@/content/products";
+import BrandIcon from "./BrandIcon";
 
 export default function Footer() {
   const year = new Date().getFullYear();
@@ -8,21 +9,24 @@ export default function Footer() {
     <footer>
       <div className="wrap">
         <div className="foot-grid">
-          <div>
-            <div className="logo" style={{ marginBottom: 14 }}>
-              {company.logo.prefix}
-              <span>{company.logo.accent}</span>
-            </div>
-            {/* [Placeholder] final branding/company descriptor to be decided. */}
+          <div className="foot-brand">
+            <span className="brand" style={{ display: "inline-flex", alignItems: "center", gap: 10 }}>
+              <BrandIcon className="brand-icon" />
+              <span className="brand-name">
+                <span className="p">{company.logo.prefix}</span>
+                <span className="a">{company.logo.accent}</span>
+              </span>
+            </span>
+            {/* [Placeholder] descriptor */}
             <p>{company.description}</p>
           </div>
 
           <div>
             <h4>PRODUCTS</h4>
             <ul>
-              {categories.slice(0, 4).map((c) => (
-                <li key={c.slug}>
-                  <Link href={`/products/${c.slug}`}>{c.name}</Link>
+              {products.slice(0, 5).map((p) => (
+                <li key={p.slug}>
+                  <Link href={`/products/${p.slug}`}>{p.name}</Link>
                 </li>
               ))}
             </ul>
@@ -31,10 +35,13 @@ export default function Footer() {
           <div>
             <h4>COMPANY</h4>
             <ul>
-              <li><Link href="/about">About</Link></li>
-              <li><Link href="/products">Products</Link></li>
-              <li><Link href="/gallery">Gallery</Link></li>
-              <li><Link href="/contact">Contact</Link></li>
+              {nav
+                .filter((n) => n.href !== "/")
+                .map((n) => (
+                  <li key={n.href}>
+                    <Link href={n.href}>{n.label}</Link>
+                  </li>
+                ))}
             </ul>
           </div>
 
@@ -43,13 +50,14 @@ export default function Footer() {
             <ul>
               <li><a href={`mailto:${company.email}`}>{company.email}</a></li>
               <li><Link href="/contact">WhatsApp (placeholder)</Link></li>
+              <li>{company.address}</li>
             </ul>
           </div>
         </div>
 
         <div className="foot-bottom">
           <p>© {year} {company.name} · Placeholder branding for development</p>
-          <p>Design v1 — Trade Routes</p>
+          <p>{company.tagline}</p>
         </div>
       </div>
     </footer>

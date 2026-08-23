@@ -1,33 +1,33 @@
 import type { Metadata } from "next";
-import ContactSection from "@/components/ContactSection";
+import QuoteSection from "@/components/QuoteSection";
 import { company } from "@/config/site";
 
 export const metadata: Metadata = {
   title: "Contact",
-  description: `Get in touch with ${company.name} — send an inquiry, email us, or reach us on WhatsApp.`,
+  description: `Get in touch with ${company.name} — request a quote by form, email, or WhatsApp.`,
 };
 
 export default async function ContactPage(
-  { searchParams }: { searchParams: Promise<{ product?: string }> }
+  { searchParams }: { searchParams: Promise<{ product?: string; market?: string }> }
 ) {
-  const { product } = await searchParams;
+  const { product, market } = await searchParams;
 
   return (
     <>
       <section className="page-hero">
         <div className="wrap">
-          <p className="eyebrow">{"/// Let's talk trade"}</p>
-          <h1>Get in touch</h1>
+          <p className="eyebrow">Contact</p>
+          <h1>Let&apos;s talk trade</h1>
           <p>
-            Tell us what you&apos;re looking to source and we&apos;ll get back
-            within one business day. Prefer email or WhatsApp? Those work too.
+            Tell us what you&apos;re looking to source and we&apos;ll respond
+            within one business day.
           </p>
         </div>
       </section>
 
       <section>
         <div className="wrap">
-          <div className="trust-grid">
+          <div className="quality-grid">
             <div className="info-card">
               <h3>Office</h3>
               {/* [Placeholder] */}
@@ -41,7 +41,7 @@ export default async function ContactPage(
             <div className="info-card">
               <h3>Email &amp; WhatsApp</h3>
               <p>
-                <a href={`mailto:${company.email}`} style={{ color: "var(--navy)", fontWeight: 600 }}>
+                <a href={`mailto:${company.email}`} style={{ color: "var(--green-600)", fontWeight: 600 }}>
                   {company.email}
                 </a>
                 <br />
@@ -52,7 +52,7 @@ export default async function ContactPage(
         </div>
       </section>
 
-      <ContactSection defaultCategorySlug={product} />
+      <QuoteSection defaultProductSlug={product} defaultMarket={market} />
     </>
   );
 }

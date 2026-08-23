@@ -1,12 +1,12 @@
 import type { Metadata } from "next";
-import ProductGrid from "@/components/ProductGrid";
-import ContactSection from "@/components/ContactSection";
-import { categories } from "@/content/categories";
+import ProductCard from "@/components/ProductCard";
+import QuoteSection from "@/components/QuoteSection";
+import { products } from "@/content/products";
 
 export const metadata: Metadata = {
   title: "Products",
   description:
-    "Explore our product categories — spices, fruits & vegetables, grains & pulses, dry fruits & nuts, textiles, and handicrafts.",
+    "Our pulses & dal range — Toor, Chana, Masoor, Moong, Urad, Kabuli chickpeas, Black eye pea and more.",
 };
 
 export default function ProductsPage() {
@@ -14,23 +14,26 @@ export default function ProductsPage() {
     <>
       <section className="page-hero">
         <div className="wrap">
-          <p className="eyebrow">{"/// What we trade"}</p>
-          <h1>Product categories</h1>
+          <p className="eyebrow">Products</p>
+          <h1>Our pulses &amp; dal range</h1>
           <p>
-            Starting with our most established lines — expanding steadily as we
-            grow into new markets and commodities. Select a category to learn
-            more or send an inquiry.
+            Machine-cleaned, graded, and export-ready. Select a product to see
+            details or send an inquiry for a quote.
           </p>
         </div>
       </section>
 
       <section>
         <div className="wrap">
-          <ProductGrid items={categories} />
+          <div className="prod-grid">
+            {products.map((p) => (
+              <ProductCard key={p.slug} product={p} />
+            ))}
+          </div>
         </div>
       </section>
 
-      <ContactSection />
+      <QuoteSection />
     </>
   );
 }

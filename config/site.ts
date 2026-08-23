@@ -1,30 +1,29 @@
 /**
  * SINGLE SOURCE OF TRUTH FOR BRANDING & COMPANY INFO.
  *
- * "SaraStackLabs" is a PLACEHOLDER used only during development.
- * To rebrand the entire site, edit the values in this file — nothing else
- * hardcodes the brand name, email, or contact details.
+ * "Farm to World" and all contact details below are PLACEHOLDERS used during
+ * development. To rebrand the entire site, edit the values in this file —
+ * nothing else hardcodes the brand name, email, or contact details.
  *
  * Contact email / WhatsApp number can be overridden at runtime via
- * environment variables (see .env.example) so they can differ per
- * deployment without a code change.
+ * environment variables (see .env.example) so they can differ per deployment.
  */
 
 export interface CompanyInfo {
-  /** Full brand name, e.g. used in metadata, footer, copyright. */
+  /** Full brand name (metadata, footer, copyright). */
   name: string;
-  /** Two-tone wordmark split. `accent` is rendered in the amber accent color. */
+  /** Two-tone wordmark split. `prefix` is green, `accent` is navy. */
   logo: { prefix: string; accent: string };
+  /** Short strapline shown under the logo. */
+  logoTagline: string;
   /** Contact email. Overridable via NEXT_PUBLIC_CONTACT_EMAIL. */
   email: string;
-  /**
-   * WhatsApp number in international format WITHOUT "+" or spaces for the
-   * wa.me deep link (e.g. "919999999999"). Overridable via
-   * NEXT_PUBLIC_WHATSAPP_NUMBER.
-   */
+  /** WhatsApp number, digits only, intl format. Overridable via env. */
   whatsappNumber: string;
   /** Human-readable WhatsApp display string. */
   whatsappDisplay: string;
+  /** Human-readable phone. */
+  phoneDisplay: string;
   /** [Placeholder] Postal / office address. */
   address: string;
   /** [Placeholder] Business hours. */
@@ -36,31 +35,47 @@ export interface CompanyInfo {
 }
 
 export const company: CompanyInfo = {
-  name: "SaraStackLabs",
-  logo: { prefix: "SaraStack", accent: "Labs" },
-  email: process.env.NEXT_PUBLIC_CONTACT_EMAIL || "SaraStackLabs@gmail.com",
-  whatsappNumber: process.env.NEXT_PUBLIC_WHATSAPP_NUMBER || "910000000000",
-  whatsappDisplay: "+91 XXXXX XXXXX (placeholder)",
+  name: "Farm to World",
+  logo: { prefix: "Farm to ", accent: "World" },
+  logoTagline: "Quality · Trust · Timely Delivery",
+  email: process.env.NEXT_PUBLIC_CONTACT_EMAIL || "sales@farm2world.example",
+  whatsappNumber: process.env.NEXT_PUBLIC_WHATSAPP_NUMBER || "919599435956",
+  whatsappDisplay: "+91 95994 35956",
+  phoneDisplay: "+91 95994 35956",
   // [Placeholder] Replace with real registered address before launch.
   address: "123 Trade Avenue, Mumbai, Maharashtra 400001, India",
   // [Placeholder] Replace with real hours before launch.
   businessHours: "Mon – Sat · 9:30 AM – 6:30 PM IST",
-  tagline: "Global Trade, Delivered",
+  tagline: "Trust in Every Shipment",
   description:
-    "Import and export, built on trust and quality — connecting Indian producers with buyers across the globe.",
+    "Premium quality pulses sourced from India, delivered reliably to global markets.",
 };
 
 /** Primary navigation used by the header and footer. */
 export const nav = [
+  { label: "Home", href: "/" },
+  { label: "About Us", href: "/about" },
   { label: "Products", href: "/products" },
-  { label: "About", href: "/about" },
-  { label: "Gallery", href: "/gallery" },
+  { label: "Markets", href: "/markets" },
+  { label: "Quality", href: "/quality" },
+  { label: "FAQs", href: "/faqs" },
   { label: "Contact", href: "/contact" },
+] as const;
+
+/** Label for the primary header/nav call-to-action. */
+export const ctaLabel = "Get a Quote";
+
+/** Headline stats shown in the dark band on the homepage. */
+export const stats = [
+  { value: "100+", label: "Products Exported" },
+  { value: "20+", label: "Countries Served" },
+  { value: "5000+ MT", label: "Capacity Per Month" },
+  { value: "100%", label: "Quality Commitment" },
 ] as const;
 
 /** Canonical site URL (used for metadata / Open Graph). */
 export const siteUrl =
-  process.env.NEXT_PUBLIC_SITE_URL || "https://sarastacklabs.example.com";
+  process.env.NEXT_PUBLIC_SITE_URL || "https://farm2world.example.com";
 
 /** Build a wa.me deep link, optionally with a prefilled message. */
 export function whatsappLink(message?: string): string {

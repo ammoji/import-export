@@ -1,24 +1,27 @@
 "use client";
 
 import { useState } from "react";
-import { categories } from "@/content/categories";
+import { products } from "@/content/products";
+import { markets } from "@/content/markets";
 
 type Status = { type: "idle" | "success" | "error"; message?: string };
 
 interface Props {
-  /** Pre-select the product interest dropdown (used by category detail CTA). */
-  defaultCategorySlug?: string;
+  /** Pre-select the product interest dropdown. */
+  defaultProductSlug?: string;
+  /** Pre-select / prefill the destination market. */
+  defaultMarket?: string;
 }
 
-export default function InquiryForm({ defaultCategorySlug }: Props) {
-  const defaultName =
-    categories.find((c) => c.slug === defaultCategorySlug)?.name ?? "";
+export default function InquiryForm({ defaultProductSlug, defaultMarket }: Props) {
+  const defaultProduct =
+    products.find((p) => p.slug === defaultProductSlug)?.name ?? "";
 
   const [values, setValues] = useState({
     fullName: "",
     company: "",
-    country: "",
-    product: defaultName,
+    country: defaultMarket ?? "",
+    product: defaultProduct,
     message: "",
   });
   const [errors, setErrors] = useState<Record<string, string>>({});
@@ -78,61 +81,49 @@ export default function InquiryForm({ defaultCategorySlug }: Props) {
         </div>
       )}
 
-      <input
-        type="text"
-        placeholder="Full name"
-        aria-label="Full name"
-        value={values.fullName}
-        onChange={update("fullName")}
-        aria-invalid={!!errors.fullName}
-      />
-      {errors.fullName && <p className="field-error">{errors.fullName}</p>}
+      <div className="grid2">
+        <div>
+          <label htmlFor="f-name">Full name</label>
+          <input id="f-name" type="text" placeholder="Your name" value={values.fullName} onChange={update("fullName")} aria-invalid={!!errors.fullName} />
+          {errors.fullName && <p className="field-error">{errors.fullName}</p>}
+        </div>
+        <div>
+          <label htmlFor="f-company">Company</label>
+          <input id="f-company" type="text" placeholder="Company name" value={values.company} onChange={update("company")} />
+        </div>
+      </div>
 
-      <input
-        type="text"
-        placeholder="Company name"
-        aria-label="Company name"
-        value={values.company}
-        onChange={update("company")}
-      />
+      <div className="grid2">
+        <div>
+          <label htmlFor="f-country">Country / market</label>
+          <input id="f-country" type="text" list="markets" placeholder="Destination country" value={values.country} onChange={update("country")} aria-invalid={!!errors.country} />
+          <datalist id="markets">
+            {markets.map((m) => (
+              <option key={m.slug} value={m.name} />
+            ))}
+          </datalist>
+          {errors.country && <p className="field-error">{errors.country}</p>}
+        </div>
+        <div>
+          <label htmlFor="f-product">Product interest</label>
+          <select id="f-product" value={values.product} onChange={update("product")} aria-invalid={!!errors.product}>
+            <option value="">Select a product</option>
+            {products.map((p) => (
+              <option key={p.slug} value={p.name}>{p.name}</option>
+            ))}
+          </select>
+          {errors.product && <p className="field-error">{errors.product}</p>}
+        </div>
+      </div>
 
-      <input
-        type="text"
-        placeholder="Country"
-        aria-label="Country"
-        value={values.country}
-        onChange={update("country")}
-        aria-invalid={!!errors.country}
-      />
-      {errors.country && <p className="field-error">{errors.country}</p>}
+      <div>
+        <label htmlFor="f-message">Message</label>
+        <textarea id="f-message" rows={4} placeholder="Quantity, packaging, timeline…" value={values.message} onChange={update("message")} aria-invalid={!!errors.message} />
+        {errors.message && <p className="field-error">{errors.message}</p>}
+      </div>
 
-      <select
-        aria-label="Product interest"
-        value={values.product}
-        onChange={update("product")}
-        aria-invalid={!!errors.product}
-      >
-        <option value="">Product interest</option>
-        {categories.map((c) => (
-          <option key={c.slug} value={c.name}>
-            {c.name}
-          </option>
-        ))}
-      </select>
-      {errors.product && <p className="field-error">{errors.product}</p>}
-
-      <textarea
-        rows={3}
-        placeholder="Tell us what you need"
-        aria-label="Message"
-        value={values.message}
-        onChange={update("message")}
-        aria-invalid={!!errors.message}
-      />
-      {errors.message && <p className="field-error">{errors.message}</p>}
-
-      <button type="submit" disabled={submitting}>
-        {submitting ? "Sending…" : "Send inquiry"}
+      <button type="submit" className="btn btn-green" disabled={submitting}>
+        {submitting ? "Sending…" : "Request a Quote"}
       </button>
     </form>
   );

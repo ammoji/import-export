@@ -1,9 +1,9 @@
-# SaraStackLabs — Import / Export website
+# Farm to World — Pulses Export website
 
-Marketing & lead-generation site for a general import/export trading company
-based in India, serving B2B buyers domestically and internationally.
+Marketing & lead-generation site for an India-based pulses/dal export company,
+serving B2B buyers across global markets.
 
-> **Branding note:** `SaraStackLabs` (name, email, WhatsApp) is a **placeholder**
+> **Branding note:** `Farm to World` (name, email, WhatsApp) is a **placeholder**
 > for development. All of it lives in a single config file — see
 > [Rebranding](#rebranding) — so renaming later is a one-line change. Copy marked
 > `[Placeholder]` in the source is provisional and meant to be replaced with real
@@ -38,18 +38,20 @@ npm run lint    # eslint
 
 ```
 app/                     App Router pages
-  page.tsx               Home (matches the approved mockup)
-  about/                 About
+  page.tsx               Home (hero, products, focus market, policy, stats)
+  about/                 About Us
   products/              Products index
-  products/[slug]/       Category detail (dynamic, prerendered per category)
-  gallery/               Gallery (responsive grid + lightbox)
+  products/[slug]/       Product detail (dynamic, prerendered per product)
+  markets/               Markets (focus market + all markets)
+  quality/               Quality process
+  faqs/                  FAQs
   contact/               Contact (form + address/hours)
   api/inquiry/route.ts   Inquiry form handler (sends email via Resend)
 components/               Reusable UI (Header, Footer, Hero, cards, form, …)
-config/site.ts           SINGLE SOURCE for branding + company info
+config/site.ts           SINGLE SOURCE for branding, nav, stats
 content/                 Editable content (see below)
-public/gallery/          Placeholder gallery images (SVG)
-app/globals.css          Design system (ported from the mockup)
+content/images.ts        Placeholder photo URLs (Pexels CDN)
+app/globals.css          Design system (green/navy/teal tokens)
 ```
 
 ---
@@ -61,11 +63,15 @@ updates:
 
 | What | File |
 | --- | --- |
-| Product categories (name, descriptions, thumbnail label) | `content/categories.ts` |
+| Products (pulses/dal: name, descriptions, specs) | `content/products.ts` |
+| Markets (focus + list, flags, points) | `content/markets.ts` |
+| "Why us" feature row | `content/features.ts` |
+| FAQs | `content/faqs.ts` |
+| Quality process steps | `content/quality.ts` |
+| Policy notice (homepage card) | `content/policy.ts` |
 | Testimonials | `content/testimonials.ts` |
-| "Why us" cards | `content/whyUs.ts` |
-| Gallery images | `content/gallery.ts` (+ drop files in `public/gallery/`) |
-| Company name, email, WhatsApp, address, hours, tagline | `config/site.ts` |
+| Placeholder photos (Pexels URLs) | `content/images.ts` |
+| Brand name, email, WhatsApp, address, hours, nav, stats | `config/site.ts` |
 | Type definitions for the above | `content/types.ts` |
 
 Longer page copy (About story/mission, category highlights) lives inline in the
@@ -123,9 +129,9 @@ that value (or `NEXT_PUBLIC_WHATSAPP_NUMBER`) before launch.
 ## Notes / out of scope for v1
 
 - No CMS, database, accounts, payments, certifications, or multi-language.
-- The hero background video is placeholder stock footage (Pexels) — swap for
-  owned footage in `components/Hero.tsx`.
-- Gallery images are placeholder SVGs in `public/gallery/` — replace with real
-  photography (JPG/PNG/WebP) and update `content/gallery.ts` dimensions.
+- All photography is placeholder stock (Pexels CDN), referenced from
+  `content/images.ts` — replace the URLs (or drop owned files in `/public`) with
+  real photography before launch. Remote images are allowed via `next.config.ts`.
+- Deployable to Vercel **or** Netlify (a `netlify.toml` is included).
 - Motion respects `prefers-reduced-motion`; interactive elements have visible
   focus states.

@@ -1,27 +1,27 @@
 import Link from "next/link";
 import Image from "next/image";
-import type { Category } from "@/content/types";
+import type { Product } from "@/content/types";
 
-export default function ProductCard({ category }: { category: Category }) {
+export default function ProductCard({ product }: { product: Product }) {
   return (
-    <Link className="prod-card" href={`/products/${category.slug}`}>
-      <div className="prod-img">
-        {category.heroImage ? (
+    <Link className="prod-card" href={`/products/${product.slug}`}>
+      <div className="pc-img">
+        {product.image && (
           <Image
-            src={category.heroImage}
-            alt={category.name}
+            src={product.image}
+            alt={product.name}
             fill
-            sizes="(max-width: 560px) 100vw, (max-width: 900px) 50vw, 33vw"
+            sizes="(max-width: 620px) 100vw, (max-width: 960px) 50vw, 33vw"
             style={{ objectFit: "cover" }}
           />
-        ) : null}
-        <span className="prod-badge">{category.thumbLabel}</span>
+        )}
       </div>
-      <div className="prod-body">
-        <h3>{category.name}</h3>
-        <p>{category.shortDescription}</p>
-        <span className="prod-link">
-          Enquire <span aria-hidden="true">&rarr;</span>
+      <div className="pc-body">
+        <h3>{product.name}</h3>
+        {product.localName && <p className="pc-local">{product.localName}</p>}
+        <p>{product.shortDescription}</p>
+        <span className="pc-link">
+          View details <span aria-hidden="true">&rarr;</span>
         </span>
       </div>
     </Link>
