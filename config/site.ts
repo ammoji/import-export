@@ -35,10 +35,10 @@ export interface CompanyInfo {
 }
 
 export const company: CompanyInfo = {
-  name: "Farm to World",
-  logo: { prefix: "Farm to ", accent: "World" },
+  name: "Farms2World",
+  logo: { prefix: "Farms2", accent: "World" },
   logoTagline: "Quality · Trust · Timely Delivery",
-  email: process.env.NEXT_PUBLIC_CONTACT_EMAIL || "sales@farm2world.example",
+  email: process.env.NEXT_PUBLIC_CONTACT_EMAIL || "info@farms2world.com",
   whatsappNumber: process.env.NEXT_PUBLIC_WHATSAPP_NUMBER || "919599435956",
   whatsappDisplay: "+91 95994 35956",
   phoneDisplay: "+91 95994 35956",
@@ -48,7 +48,7 @@ export const company: CompanyInfo = {
   businessHours: "Mon – Sat · 9:30 AM – 6:30 PM IST",
   tagline: "Trust in Every Shipment",
   description:
-    "Premium quality pulses sourced from India, delivered reliably to global markets.",
+    "Quality pulses, spices, produce, dry fruits, textiles and handicrafts — sourced from India and delivered reliably to global markets.",
 };
 
 /** Primary navigation used by the header and footer. */
@@ -75,7 +75,7 @@ export const stats = [
 
 /** Canonical site URL (used for metadata / Open Graph). */
 export const siteUrl =
-  process.env.NEXT_PUBLIC_SITE_URL || "https://farm2world.example.com";
+  process.env.NEXT_PUBLIC_SITE_URL || "https://farms2world.com";
 
 /** Build a wa.me deep link, optionally with a prefilled message. */
 export function whatsappLink(message?: string): string {

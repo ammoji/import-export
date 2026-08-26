@@ -1,7 +1,20 @@
-/** Content model types for Farm to World. */
+/** Content model types for Farms2World. */
+
+export interface Category {
+  slug: string;
+  name: string;
+  /** Short one-liner used on cards. */
+  shortDescription: string;
+  /** Full description used on the category page. */
+  longDescription: string;
+  /** Image path (Pexels URL or /public path). */
+  image?: string;
+}
 
 export interface Product {
   slug: string;
+  /** The category this product belongs to. */
+  categorySlug: string;
   /** Display name, e.g. "Toor Dal". */
   name: string;
   /** Local / alternate name shown as a subtitle, e.g. "Arhar / Pigeon Pea". */

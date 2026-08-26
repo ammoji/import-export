@@ -3,27 +3,29 @@ import Link from "next/link";
 import Image from "next/image";
 import { notFound } from "next/navigation";
 import QuoteSection from "@/components/QuoteSection";
+import { getCategory } from "@/content/categories";
 import { products, getProduct } from "@/content/products";
 
 export function generateStaticParams() {
-  return products.map((p) => ({ slug: p.slug }));
+  return products.map((p) => ({ category: p.categorySlug, product: p.slug }));
 }
 
 export async function generateMetadata(
-  { params }: { params: Promise<{ slug: string }> }
+  { params }: { params: Promise<{ category: string; product: string }> }
 ): Promise<Metadata> {
-  const { slug } = await params;
-  const product = getProduct(slug);
-  if (!product) return { title: "Not found" };
-  return { title: product.name, description: product.shortDescription };
+  const { product } = await params;
+  const p = getProduct(product);
+  if (!p) return { title: "Not found" };
+  return { title: p.name, description: p.shortDescription };
 }
 
 export default async function ProductDetailPage(
-  { params }: { params: Promise<{ slug: string }> }
+  { params }: { params: Promise<{ category: string; product: string }> }
 ) {
-  const { slug } = await params;
-  const product = getProduct(slug);
-  if (!product) notFound();
+  const { category, product } = await params;
+  const p = getProduct(product);
+  const cat = getCategory(category);
+  if (!p || !cat || p.categorySlug !== category) notFound();
 
   return (
     <>
@@ -34,10 +36,12 @@ export default async function ProductDetailPage(
             <span className="sep">/</span>
             <Link href="/products">Products</Link>
             <span className="sep">/</span>
-            {product.name}
+            <Link href={`/products/${cat.slug}`}>{cat.name}</Link>
+            <span className="sep">/</span>
+            {p.name}
           </p>
-          <h1>{product.name}</h1>
-          {product.localName && <p>{product.localName}</p>}
+          <h1>{p.name}</h1>
+          {p.localName && <p>{p.localName}</p>}
         </div>
       </section>
 
@@ -45,15 +49,15 @@ export default async function ProductDetailPage(
         <div className="wrap">
           <div className="detail-grid">
             <div className="detail-img">
-              {product.image && (
-                <Image src={product.image} alt={product.name} fill sizes="(max-width: 960px) 100vw, 50vw" style={{ objectFit: "cover" }} priority />
+              {p.image && (
+                <Image src={p.image} alt={p.name} fill sizes="(max-width: 960px) 100vw, 50vw" style={{ objectFit: "cover" }} priority />
               )}
             </div>
             <div className="detail-body">
-              <p className="lead">{product.longDescription}</p>
-              {product.specs && (
+              <p className="lead">{p.longDescription}</p>
+              {p.specs && (
                 <ul className="spec-table">
-                  {product.specs.map((s) => (
+                  {p.specs.map((s) => (
                     <li key={s.label}>
                       <b>{s.label}</b>
                       <span>{s.value}</span>
@@ -61,15 +65,15 @@ export default async function ProductDetailPage(
                   ))}
                 </ul>
               )}
-              <Link href={`/contact?product=${product.slug}`} className="btn btn-green">
-                Enquire about {product.name}
+              <Link href={`/contact?product=${p.slug}`} className="btn btn-green">
+                Enquire about {p.name}
               </Link>
             </div>
           </div>
         </div>
       </section>
 
-      <QuoteSection defaultProductSlug={product.slug} />
+      <QuoteSection defaultCategorySlug={cat.slug} defaultProductName={p.name} />
     </>
   );
 }

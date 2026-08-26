@@ -3,11 +3,16 @@ import InquiryForm from "./InquiryForm";
 import Icon from "./Icon";
 
 interface Props {
-  defaultProductSlug?: string;
+  defaultCategorySlug?: string;
+  defaultProductName?: string;
   defaultMarket?: string;
 }
 
-export default function QuoteSection({ defaultProductSlug, defaultMarket }: Props) {
+export default function QuoteSection({
+  defaultCategorySlug,
+  defaultProductName,
+  defaultMarket,
+}: Props) {
   return (
     <section id="quote">
       <div className="wrap">
@@ -29,7 +34,7 @@ export default function QuoteSection({ defaultProductSlug, defaultMarket }: Prop
               </a>
               <a
                 className="channel"
-                href={whatsappLink("Hi Farm to World, I'd like a quote for pulses.")}
+                href={whatsappLink("Hi Farms2World, I'd like a quote.")}
                 target="_blank"
                 rel="noopener noreferrer"
               >
@@ -49,7 +54,11 @@ export default function QuoteSection({ defaultProductSlug, defaultMarket }: Prop
             </div>
           </div>
           <div className="card-form">
-            <InquiryForm defaultProductSlug={defaultProductSlug} defaultMarket={defaultMarket} />
+            <InquiryForm
+              defaultCategorySlug={defaultCategorySlug}
+              defaultProductName={defaultProductName}
+              defaultMarket={defaultMarket}
+            />
           </div>
         </div>
       </div>

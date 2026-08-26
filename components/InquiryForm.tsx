@@ -1,28 +1,34 @@
 "use client";
 
 import { useState } from "react";
-import { products } from "@/content/products";
+import { categories } from "@/content/categories";
 import { markets } from "@/content/markets";
 
 type Status = { type: "idle" | "success" | "error"; message?: string };
 
 interface Props {
-  /** Pre-select the product interest dropdown. */
-  defaultProductSlug?: string;
+  /** Pre-select the category interest dropdown. */
+  defaultCategorySlug?: string;
+  /** Prefill the message with a specific product of interest. */
+  defaultProductName?: string;
   /** Pre-select / prefill the destination market. */
   defaultMarket?: string;
 }
 
-export default function InquiryForm({ defaultProductSlug, defaultMarket }: Props) {
-  const defaultProduct =
-    products.find((p) => p.slug === defaultProductSlug)?.name ?? "";
+export default function InquiryForm({
+  defaultCategorySlug,
+  defaultProductName,
+  defaultMarket,
+}: Props) {
+  const defaultInterest =
+    categories.find((c) => c.slug === defaultCategorySlug)?.name ?? "";
 
   const [values, setValues] = useState({
     fullName: "",
     company: "",
     country: defaultMarket ?? "",
-    product: defaultProduct,
-    message: "",
+    product: defaultInterest,
+    message: defaultProductName ? `I'm interested in ${defaultProductName}. ` : "",
   });
   const [errors, setErrors] = useState<Record<string, string>>({});
   const [status, setStatus] = useState<Status>({ type: "idle" });
@@ -107,9 +113,9 @@ export default function InquiryForm({ defaultProductSlug, defaultMarket }: Props
         <div>
           <label htmlFor="f-product">Product interest</label>
           <select id="f-product" value={values.product} onChange={update("product")} aria-invalid={!!errors.product}>
-            <option value="">Select a product</option>
-            {products.map((p) => (
-              <option key={p.slug} value={p.name}>{p.name}</option>
+            <option value="">Select a category</option>
+            {categories.map((c) => (
+              <option key={c.slug} value={c.name}>{c.name}</option>
             ))}
           </select>
           {errors.product && <p className="field-error">{errors.product}</p>}

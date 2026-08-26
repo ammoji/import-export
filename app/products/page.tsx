@@ -1,12 +1,12 @@
 import type { Metadata } from "next";
-import ProductCard from "@/components/ProductCard";
+import CategoryCard from "@/components/CategoryCard";
 import QuoteSection from "@/components/QuoteSection";
-import { products } from "@/content/products";
+import { categories } from "@/content/categories";
 
 export const metadata: Metadata = {
   title: "Products",
   description:
-    "Our pulses & dal range — Toor, Chana, Masoor, Moong, Urad, Kabuli chickpeas, Black eye pea and more.",
+    "Our product categories — grains & pulses, spices, fruits & vegetables, dry fruits & nuts, textiles, and handicrafts.",
 };
 
 export default function ProductsPage() {
@@ -15,10 +15,10 @@ export default function ProductsPage() {
       <section className="page-hero">
         <div className="wrap">
           <p className="eyebrow">Products</p>
-          <h1>Our pulses &amp; dal range</h1>
+          <h1>Our product range</h1>
           <p>
-            Machine-cleaned, graded, and export-ready. Select a product to see
-            details or send an inquiry for a quote.
+            Sourced from across India, cleaned and graded for export. Choose a
+            category to explore products or send an inquiry.
           </p>
         </div>
       </section>
@@ -26,8 +26,8 @@ export default function ProductsPage() {
       <section>
         <div className="wrap">
           <div className="prod-grid">
-            {products.map((p) => (
-              <ProductCard key={p.slug} product={p} />
+            {categories.map((c) => (
+              <CategoryCard key={c.slug} category={c} />
             ))}
           </div>
         </div>

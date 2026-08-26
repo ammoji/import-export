@@ -1,13 +1,13 @@
 import Link from "next/link";
 import Hero from "@/components/Hero";
 import KeyMarketsBar from "@/components/KeyMarketsBar";
-import ProductTile from "@/components/ProductTile";
+import CategoryTile from "@/components/CategoryTile";
 import FocusMarketCard from "@/components/FocusMarketCard";
 import PolicyCard from "@/components/PolicyCard";
 import Features from "@/components/Features";
 import StatsBand from "@/components/StatsBand";
 import QuoteSection from "@/components/QuoteSection";
-import { products } from "@/content/products";
+import { categories } from "@/content/categories";
 
 export default function HomePage() {
   return (
@@ -20,12 +20,12 @@ export default function HomePage() {
           <div className="home-grid">
             <div>
               <div className="row-head">
-                <h2>Our Core Products</h2>
+                <h2>Our Product Range</h2>
                 <Link href="/products" className="view-all">View all &rarr;</Link>
               </div>
               <div className="tiles">
-                {products.map((p) => (
-                  <ProductTile key={p.slug} product={p} />
+                {categories.map((c) => (
+                  <CategoryTile key={c.slug} category={c} />
                 ))}
               </div>
             </div>

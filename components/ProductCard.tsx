@@ -4,7 +4,7 @@ import type { Product } from "@/content/types";
 
 export default function ProductCard({ product }: { product: Product }) {
   return (
-    <Link className="prod-card" href={`/products/${product.slug}`}>
+    <Link className="prod-card" href={`/products/${product.categorySlug}/${product.slug}`}>
       <div className="pc-img">
         {product.image && (
           <Image

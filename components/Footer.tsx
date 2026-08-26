@@ -1,6 +1,6 @@
 import Link from "next/link";
 import { company, nav } from "@/config/site";
-import { products } from "@/content/products";
+import { categories } from "@/content/categories";
 import BrandIcon from "./BrandIcon";
 
 export default function Footer() {
@@ -24,9 +24,9 @@ export default function Footer() {
           <div>
             <h4>PRODUCTS</h4>
             <ul>
-              {products.slice(0, 5).map((p) => (
-                <li key={p.slug}>
-                  <Link href={`/products/${p.slug}`}>{p.name}</Link>
+              {categories.map((c) => (
+                <li key={c.slug}>
+                  <Link href={`/products/${c.slug}`}>{c.name}</Link>
                 </li>
               ))}
             </ul>

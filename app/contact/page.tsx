@@ -1,6 +1,8 @@
 import type { Metadata } from "next";
 import QuoteSection from "@/components/QuoteSection";
 import { company } from "@/config/site";
+import { getProduct } from "@/content/products";
+import { getCategory } from "@/content/categories";
 
 export const metadata: Metadata = {
   title: "Contact",
@@ -8,9 +10,12 @@ export const metadata: Metadata = {
 };
 
 export default async function ContactPage(
-  { searchParams }: { searchParams: Promise<{ product?: string; market?: string }> }
+  { searchParams }: { searchParams: Promise<{ product?: string; category?: string; market?: string }> }
 ) {
-  const { product, market } = await searchParams;
+  const { product, category, market } = await searchParams;
+  const p = product ? getProduct(product) : undefined;
+  const categorySlug = p?.categorySlug ?? (category && getCategory(category) ? category : undefined);
+  const productName = p?.name;
 
   return (
     <>
@@ -52,7 +57,7 @@ export default async function ContactPage(
         </div>
       </section>
 
-      <QuoteSection defaultProductSlug={product} defaultMarket={market} />
+      <QuoteSection defaultCategorySlug={categorySlug} defaultProductName={productName} defaultMarket={market} />
     </>
   );
 }

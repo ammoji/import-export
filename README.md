@@ -1,9 +1,10 @@
-# Farm to World — Pulses Export website
+# Farms2World — Export website
 
-Marketing & lead-generation site for an India-based pulses/dal export company,
-serving B2B buyers across global markets.
+Marketing & lead-generation site for an India-based agri/commodity export
+company (pulses, spices, produce, dry fruits & nuts, textiles, handicrafts),
+serving B2B buyers across global markets. Domain: **farms2world.com**.
 
-> **Branding note:** `Farm to World` (name, email, WhatsApp) is a **placeholder**
+> **Branding note:** contact details (email/WhatsApp) are **placeholders**
 > for development. All of it lives in a single config file — see
 > [Rebranding](#rebranding) — so renaming later is a one-line change. Copy marked
 > `[Placeholder]` in the source is provisional and meant to be replaced with real
@@ -41,7 +42,8 @@ app/                     App Router pages
   page.tsx               Home (hero, products, focus market, policy, stats)
   about/                 About Us
   products/              Products index
-  products/[slug]/       Product detail (dynamic, prerendered per product)
+  products/[category]/           Category page (products in that category)
+  products/[category]/[product]/ Product detail (dynamic, prerendered)
   markets/               Markets (focus market + all markets)
   quality/               Quality process
   faqs/                  FAQs
@@ -63,7 +65,8 @@ updates:
 
 | What | File |
 | --- | --- |
-| Products (pulses/dal: name, descriptions, specs) | `content/products.ts` |
+| Categories (6 top-level groups) | `content/categories.ts` |
+| Products (per category via `categorySlug`) | `content/products.ts` |
 | Markets (focus + list, flags, points) | `content/markets.ts` |
 | "Why us" feature row | `content/features.ts` |
 | FAQs | `content/faqs.ts` |
