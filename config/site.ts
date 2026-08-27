@@ -39,11 +39,11 @@ export const company: CompanyInfo = {
   logo: { prefix: "Farms2", accent: "World" },
   logoTagline: "Quality · Trust · Timely Delivery",
   email: process.env.NEXT_PUBLIC_CONTACT_EMAIL || "info@farms2world.com",
-  whatsappNumber: process.env.NEXT_PUBLIC_WHATSAPP_NUMBER || "919599435956",
-  whatsappDisplay: "+91 95994 35956",
-  phoneDisplay: "+91 95994 35956",
-  // [Placeholder] Replace with real registered address before launch.
-  address: "123 Trade Avenue, Mumbai, Maharashtra 400001, India",
+  whatsappNumber: process.env.NEXT_PUBLIC_WHATSAPP_NUMBER || "919958735956",
+  whatsappDisplay: "+91 99587 35956",
+  phoneDisplay: "+91 99587 35956",
+  address:
+    "House Number 314, Village Sikri, Tehsil Ballabgarh, Faridabad, Pin 121004",
   // [Placeholder] Replace with real hours before launch.
   businessHours: "Mon – Sat · 9:30 AM – 6:30 PM IST",
   tagline: "Trust in Every Shipment",
@@ -64,14 +64,6 @@ export const nav = [
 
 /** Label for the primary header/nav call-to-action. */
 export const ctaLabel = "Get a Quote";
-
-/** Headline stats shown in the dark band on the homepage. */
-export const stats = [
-  { value: "100+", label: "Products Exported" },
-  { value: "20+", label: "Countries Served" },
-  { value: "5000+ MT", label: "Capacity Per Month" },
-  { value: "100%", label: "Quality Commitment" },
-] as const;
 
 /** Canonical site URL (used for metadata / Open Graph). */
 export const siteUrl =

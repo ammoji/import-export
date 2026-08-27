@@ -38,6 +38,13 @@ const paths: Record<string, ReactNode> = {
     </>
   ),
   check: <path d="M5 12l4 4 10-10" />,
+  smile: (
+    <>
+      <circle cx="12" cy="12" r="9" />
+      <path d="M8 14c1 1.4 2.4 2 4 2s3-.6 4-2" />
+      <path d="M9 9.5h.01M15 9.5h.01" />
+    </>
+  ),
   mail: (
     <>
       <rect x="3" y="5" width="18" height="14" rx="2" />

@@ -1,4 +1,3 @@
-import Link from "next/link";
 import Image from "next/image";
 import Icon from "./Icon";
 import { px, photos } from "@/content/images";
@@ -21,8 +20,9 @@ export default function Hero() {
               <em>Trust</em> in Every Shipment
             </h1>
             <p className="hero-sub">
-              Premium quality pulses sourced from India, delivered reliably to
-              global markets.
+              Premium quality pulses, spices, produce, dry fruits, textiles and
+              handicrafts — sourced from India and delivered reliably to global
+              markets.
             </p>
             <div className="hero-badges">
               {badges.map((b) => (
@@ -34,10 +34,6 @@ export default function Hero() {
                   </span>
                 </div>
               ))}
-            </div>
-            <div className="hero-cta">
-              <Link href="/products" className="btn btn-primary">Our Products</Link>
-              <Link href="/contact" className="btn btn-outline">Request a Quote</Link>
             </div>
           </div>
 

@@ -5,7 +5,6 @@ import CategoryTile from "@/components/CategoryTile";
 import FocusMarketCard from "@/components/FocusMarketCard";
 import PolicyCard from "@/components/PolicyCard";
 import Features from "@/components/Features";
-import StatsBand from "@/components/StatsBand";
 import QuoteSection from "@/components/QuoteSection";
 import { categories } from "@/content/categories";
 
@@ -38,7 +37,6 @@ export default function HomePage() {
       </section>
 
       <Features />
-      <StatsBand />
       <QuoteSection />
     </>
   );

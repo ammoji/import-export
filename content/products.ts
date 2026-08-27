@@ -155,6 +155,24 @@ export const products: Product[] = [
       { label: "Packaging", value: "Bulk & retail-ready" },
     ],
   },
+  {
+    slug: "nutmeg", categorySlug: "spices", name: "Nutmeg",
+    localName: "Jaiphal", image: px(photos.nutmeg),
+    shortDescription: "Whole and ground nutmeg with rich aroma.",
+    longDescription:
+      "Nutmeg (Jaiphal) — whole seeds or ground — selected for aroma and oil content, cleaned and packed for export and retail.",
+    specs: [
+      { label: "Form", value: "Whole / ground" },
+      { label: "Packaging", value: "Bulk & retail-ready" },
+    ],
+  },
+  {
+    slug: "other-spices", categorySlug: "spices", name: "Other Spices",
+    localName: "Cardamom, cloves & more", image: px(photos.assortedSpices),
+    shortDescription: "Cardamom, cloves, fennel and more — ask for availability.",
+    longDescription:
+      "Beyond our core spices we can source a wider range — cardamom, cloves, fennel, fenugreek and regional specialities — subject to season. Tell us what you need and we'll quote.",
+  },
 
   // ─── Fruits & Vegetables ──────────────────────────────────────────
   {
@@ -200,6 +218,14 @@ export const products: Product[] = [
       { label: "Grades", value: "Size-graded" },
       { label: "Packaging", value: "Export cartons" },
     ],
+  },
+  {
+    slug: "other-fruits-vegetables", categorySlug: "fruits-vegetables",
+    name: "Other Fruits & Vegetables", localName: "Seasonal produce",
+    image: px(photos.assortedVeg),
+    shortDescription: "More seasonal fruits and vegetables on request.",
+    longDescription:
+      "Beyond our core lines we can source a wider range of seasonal fruits and vegetables to order, subject to season and destination requirements. Tell us what you need and we'll quote.",
   },
 
   // ─── Dry Fruits & Nuts ────────────────────────────────────────────
@@ -258,6 +284,14 @@ export const products: Product[] = [
       { label: "Packaging", value: "Bulk & retail-ready" },
     ],
   },
+  {
+    slug: "other-dry-fruits-nuts", categorySlug: "dry-fruits-nuts",
+    name: "Other Dry Fruits & Nuts", localName: "Walnuts, figs & more",
+    image: px(photos.nutsMix),
+    shortDescription: "Walnuts, figs, apricots and more — ask for availability.",
+    longDescription:
+      "Beyond our core range we can source a wider basket of dry fruits and nuts — walnuts, figs, apricots and regional specialities — subject to season. Tell us what you need and we'll quote.",
+  },
 
   // ─── Textiles ─────────────────────────────────────────────────────
   {
@@ -315,6 +349,13 @@ export const products: Product[] = [
       { label: "Packaging", value: "Retail & bulk" },
     ],
   },
+  {
+    slug: "other-textiles", categorySlug: "textiles", name: "Other Textiles",
+    localName: "Made-ups & more", image: px(photos.assortedTextile),
+    shortDescription: "Other fabrics and made-up textiles on request.",
+    longDescription:
+      "Beyond our core range we can source and produce other fabrics and made-up textile goods to specification. Tell us what you need and we'll quote.",
+  },
 
   // ─── Handicrafts ──────────────────────────────────────────────────
   {
@@ -371,6 +412,13 @@ export const products: Product[] = [
       { label: "Type", value: "Rugs / dhurries" },
       { label: "Packaging", value: "Rolled & wrapped" },
     ],
+  },
+  {
+    slug: "other-handicrafts", categorySlug: "handicrafts", name: "Other Handicrafts",
+    localName: "Décor, gifts & more", image: px(photos.assortedHandicraft),
+    shortDescription: "More artisanal décor and gift lines on request.",
+    longDescription:
+      "Beyond our core range we can source a wider selection of artisanal handicrafts — décor, gifting, and regional crafts — subject to availability. Tell us what you need and we'll quote.",
   },
 ];
 

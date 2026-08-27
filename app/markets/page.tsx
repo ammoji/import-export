@@ -20,8 +20,9 @@ export default function MarketsPage() {
           <p className="eyebrow">Markets</p>
           <h1>Where we ship</h1>
           <p>
-            From our base in India, we supply pulses to buyers across South Asia,
-            the Gulf, Africa and beyond — with Sri Lanka as our current focus.
+            From our base in India, we supply pulses, spices, produce and more to
+            buyers across South Asia, the Gulf, Africa and beyond — with Sri
+            Lanka as our current focus.
           </p>
         </div>
       </section>

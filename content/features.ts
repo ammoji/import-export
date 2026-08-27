@@ -7,4 +7,5 @@ export const features: Feature[] = [
   { icon: "tag", title: "Competitive Pricing", subtitle: "Best value sourcing" },
   { icon: "ship", title: "On-Time Logistics", subtitle: "Reliable ports & lanes" },
   { icon: "handshake", title: "Long-Term Partnership", subtitle: "Built on trust" },
+  { icon: "smile", title: "Complete Client Satisfaction", subtitle: "Support at every step" },
 ];

@@ -28,7 +28,7 @@ export const markets: Market[] = [
     flag: "🇲🇲",
     image: px(photos.myanmar, 800),
     // [Placeholder]
-    blurb: "Steady demand for pulses across wholesale and processing buyers.",
+    blurb: "Steady demand across wholesale and processing buyers.",
   },
   {
     slug: "uae",
@@ -44,7 +44,7 @@ export const markets: Market[] = [
     flag: "🇧🇩",
     image: px(photos.dhaka, 800),
     // [Placeholder]
-    blurb: "High-volume market for lentils and everyday pulses.",
+    blurb: "High-volume market for everyday staples and commodities.",
   },
   {
     slug: "africa",

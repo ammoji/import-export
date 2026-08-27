@@ -28,6 +28,12 @@ export const photos = {
   coriander: 5502773,
   redChilli: 30688211,
   blackPepper: 5988689,
+  nutmeg: 35339664,
+  // "Other …" assortment shots
+  assortedSpices: 5740453,
+  assortedVeg: 12974968,
+  assortedTextile: 36501061,
+  assortedHandicraft: 37076597,
   // Fruits & Vegetables
   onions: 28910277,
   potatoes: 13274212,

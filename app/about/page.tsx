@@ -23,9 +23,9 @@ export default function AboutPage() {
           <p className="eyebrow">About Us</p>
           <h1>From Indian farms to buyers worldwide</h1>
           <p>
-            {company.name} connects Indian pulse growers with buyers across the
-            globe — combining hands-on sourcing with modern, transparent
-            communication.
+            {company.name} connects Indian farmers and producers with buyers
+            across the globe — combining hands-on sourcing with modern,
+            transparent communication.
           </p>
         </div>
       </section>
@@ -38,10 +38,11 @@ export default function AboutPage() {
               <h2 style={{ fontSize: 30, marginBottom: 16 }}>Trade, done the honest way</h2>
               {/* [Placeholder] */}
               <p style={{ marginBottom: 16, color: "var(--slate)" }}>
-                We&apos;re a growing export company based in India, focused on
-                pulses and dal — toor, chana, masoor, moong, urad, chickpeas and
-                more. We source from established growing belts, process to export
-                grade, and ship reliably to global buyers.
+                We&apos;re a growing export company based in India, dealing in
+                pulses &amp; dal, spices, fresh fruits &amp; vegetables, dry
+                fruits &amp; nuts, textiles, and handicrafts. We source from
+                trusted growers and artisans, process to export grade, and ship
+                reliably to global buyers.
               </p>
               {/* [Placeholder] */}
               <p style={{ color: "var(--slate)" }}>
