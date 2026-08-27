@@ -20,7 +20,7 @@ export default function PolicyCard() {
           )}
         </p>
       </div>
-      <Link href="/faqs" className="btn btn-outline">
+      <Link href="/contact" className="btn btn-outline">
         Know more
       </Link>
     </div>

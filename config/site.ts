@@ -38,7 +38,7 @@ export const company: CompanyInfo = {
   name: "Farms2World",
   logo: { prefix: "Farms2", accent: "World" },
   logoTagline: "Quality · Trust · Timely Delivery",
-  email: process.env.NEXT_PUBLIC_CONTACT_EMAIL || "info@farms2world.com",
+  email: process.env.NEXT_PUBLIC_CONTACT_EMAIL || "support@farms2world.com",
   whatsappNumber: process.env.NEXT_PUBLIC_WHATSAPP_NUMBER || "919958735956",
   whatsappDisplay: "+91 99587 35956",
   phoneDisplay: "+91 99587 35956",
@@ -48,7 +48,7 @@ export const company: CompanyInfo = {
   businessHours: "Mon – Sat · 9:30 AM – 6:30 PM IST",
   tagline: "Trust in Every Shipment",
   description:
-    "Quality pulses, spices, produce, dry fruits, textiles and handicrafts — sourced from India and delivered reliably to global markets.",
+    "Quality pulses, spices, dry fruits, textiles and handicrafts — sourced from India and delivered reliably to global markets.",
 };
 
 /** Primary navigation used by the header and footer. */

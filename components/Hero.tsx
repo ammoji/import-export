@@ -20,7 +20,7 @@ export default function Hero() {
               <em>Trust</em> in Every Shipment
             </h1>
             <p className="hero-sub">
-              Premium quality pulses, spices, produce, dry fruits, textiles and
+              Premium quality pulses, spices, dry fruits, textiles and
               handicrafts — sourced from India and delivered reliably to global
               markets.
             </p>

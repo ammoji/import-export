@@ -1,19 +1,10 @@
 "use client";
 
 import Link from "next/link";
+import Image from "next/image";
 import { usePathname } from "next/navigation";
 import { useState } from "react";
 import { company, nav, ctaLabel } from "@/config/site";
-import BrandIcon from "./BrandIcon";
-
-function Wordmark() {
-  return (
-    <span className="brand-name">
-      <span className="p">{company.logo.prefix}</span>
-      <span className="a">{company.logo.accent}</span>
-    </span>
-  );
-}
 
 export default function Header() {
   const pathname = usePathname();
@@ -26,11 +17,7 @@ export default function Header() {
     <header>
       <nav className="nav" aria-label="Primary">
         <Link href="/" className="brand" aria-label={`${company.name} home`}>
-          <BrandIcon className="brand-icon" />
-          <span className="brand-text">
-            <Wordmark />
-            <span className="brand-tag">{company.logoTagline}</span>
-          </span>
+          <Image src="/logo.jpeg" alt={company.name} width={1254} height={1254} className="brand-logo" priority />
         </Link>
 
         <ul className="nav-links">

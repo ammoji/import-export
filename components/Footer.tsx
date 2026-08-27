@@ -1,7 +1,7 @@
 import Link from "next/link";
-import { company, nav } from "@/config/site";
+import Image from "next/image";
+import { company, nav, whatsappLink } from "@/config/site";
 import { categories } from "@/content/categories";
-import BrandIcon from "./BrandIcon";
 
 export default function Footer() {
   const year = new Date().getFullYear();
@@ -10,12 +10,8 @@ export default function Footer() {
       <div className="wrap">
         <div className="foot-grid">
           <div className="foot-brand">
-            <span className="brand" style={{ display: "inline-flex", alignItems: "center", gap: 10 }}>
-              <BrandIcon className="brand-icon" />
-              <span className="brand-name">
-                <span className="p">{company.logo.prefix}</span>
-                <span className="a">{company.logo.accent}</span>
-              </span>
+            <span className="foot-logo">
+              <Image src="/logo.jpeg" alt={company.name} width={1254} height={1254} />
             </span>
             {/* [Placeholder] descriptor */}
             <p>{company.description}</p>
@@ -49,14 +45,18 @@ export default function Footer() {
             <h4>CONTACT</h4>
             <ul>
               <li><a href={`mailto:${company.email}`}>{company.email}</a></li>
-              <li><Link href="/contact">WhatsApp (placeholder)</Link></li>
+              <li>
+                <a href={whatsappLink()} target="_blank" rel="noopener noreferrer">
+                  WhatsApp: {company.whatsappDisplay}
+                </a>
+              </li>
               <li>{company.address}</li>
             </ul>
           </div>
         </div>
 
         <div className="foot-bottom">
-          <p>© {year} {company.name} · Placeholder branding for development</p>
+          <p>© {year} {company.name}</p>
           <p>{company.tagline}</p>
         </div>
       </div>
