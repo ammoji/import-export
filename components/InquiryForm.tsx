@@ -32,11 +32,14 @@ export default function InquiryForm({
 
   const [values, setValues] = useState({
     fullName: "",
+    email: "",
     company: "",
+    phone: "",
     country: defaultCountry,
     countryOther: "",
     product: defaultInterest,
     message: defaultProductName ? `I'm interested in ${defaultProductName}. ` : "",
+    website: "", // honeypot — must stay empty
   });
   const [errors, setErrors] = useState<Record<string, string>>({});
   const [status, setStatus] = useState<Status>({ type: "idle" });
@@ -49,6 +52,9 @@ export default function InquiryForm({
   function validate() {
     const next: Record<string, string> = {};
     if (!values.fullName.trim()) next.fullName = "Please enter your name.";
+    if (!values.email.trim()) next.email = "Please enter your email.";
+    else if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(values.email.trim()))
+      next.email = "Please enter a valid email.";
     if (!values.country) next.country = "Please select your country.";
     if (values.country === OTHER && !values.countryOther.trim())
       next.countryOther = "Please enter your country.";
@@ -79,7 +85,7 @@ export default function InquiryForm({
         type: "success",
         message: "Thanks — your inquiry has been sent. We'll reply within one business day.",
       });
-      setValues({ fullName: "", company: "", country: "", countryOther: "", product: "", message: "" });
+      setValues({ fullName: "", email: "", company: "", phone: "", country: "", countryOther: "", product: "", message: "", website: "" });
     } catch (err) {
       setStatus({
         type: "error",
@@ -101,6 +107,18 @@ export default function InquiryForm({
         </div>
       )}
 
+      {/* Honeypot: hidden from users; bots that fill it are rejected. */}
+      <input
+        type="text"
+        name="website"
+        tabIndex={-1}
+        autoComplete="off"
+        aria-hidden="true"
+        value={values.website}
+        onChange={update("website")}
+        style={{ position: "absolute", left: "-9999px", width: 1, height: 1, opacity: 0 }}
+      />
+
       <div className="grid2">
         <div>
           <label htmlFor="f-name">Full name</label>
@@ -108,8 +126,20 @@ export default function InquiryForm({
           {errors.fullName && <p className="field-error">{errors.fullName}</p>}
         </div>
         <div>
+          <label htmlFor="f-email">Email</label>
+          <input id="f-email" type="email" placeholder="you@company.com" value={values.email} onChange={update("email")} aria-invalid={!!errors.email} />
+          {errors.email && <p className="field-error">{errors.email}</p>}
+        </div>
+      </div>
+
+      <div className="grid2">
+        <div>
           <label htmlFor="f-company">Company</label>
           <input id="f-company" type="text" placeholder="Company name" value={values.company} onChange={update("company")} />
+        </div>
+        <div>
+          <label htmlFor="f-phone">Phone / WhatsApp <span style={{ color: "var(--muted)", fontWeight: 400 }}>(optional)</span></label>
+          <input id="f-phone" type="tel" placeholder="Include country code" value={values.phone} onChange={update("phone")} />
         </div>
       </div>
 

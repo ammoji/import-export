@@ -48,7 +48,7 @@ app/                     App Router pages
   quality/               Quality process
   faqs/                  FAQs
   contact/               Contact (form + address/hours)
-  api/inquiry/route.ts   Inquiry form handler (sends email via Resend)
+  api/inquiry/route.ts   Inquiry form handler (Nodemailer via Titan SMTP)
 components/               Reusable UI (Header, Footer, Hero, cards, form, …)
 config/site.ts           SINGLE SOURCE for branding, nav, stats
 content/                 Editable content (see below)
@@ -95,24 +95,31 @@ Navigation links live in the `nav` array in the same file.
 
 ## Email & WhatsApp config
 
-The inquiry form POSTs to `app/api/inquiry/route.ts`, which sends a formatted
-email using [Resend](https://resend.com). Configure via environment variables
-(copy `.env.example` → `.env.local` locally; add them in Vercel → Project
-Settings → Environment Variables):
+The inquiry form POSTs to `app/api/inquiry/route.ts`, which uses **Nodemailer**
+over your **Titan** mailbox (SMTP) to (1) send a notification to your inbox and
+(2) send an auto-reply to the customer. The notification's `Reply-To` is the
+customer's email, so hitting Reply in Titan goes straight to them.
+
+Configure via environment variables (copy `.env.example` → `.env.local`
+locally; add them in Netlify → Site configuration → Environment variables):
 
 | Variable | Purpose |
 | --- | --- |
-| `RESEND_API_KEY` | Resend API key. **Required in production.** |
-| `INQUIRY_FROM_EMAIL` | Verified sender address (defaults to Resend's `onboarding@resend.dev` sandbox). |
-| `CONTACT_EMAIL` | Where inquiries are delivered (defaults to the address in `config/site.ts`). |
+| `SMTP_HOST` | `smtp.titan.email` |
+| `SMTP_PORT` | `465` (SSL) or `587` (STARTTLS) |
+| `SMTP_USER` | Mailbox address, e.g. `support@farms2world.com` |
+| `SMTP_PASS` | Mailbox password (**secret — never commit**) |
+| `CONTACT_EMAIL` | Where notifications are delivered (defaults to `SMTP_USER`). |
 | `NEXT_PUBLIC_CONTACT_EMAIL` | Optional: override the email shown on the site. |
-| `NEXT_PUBLIC_WHATSAPP_NUMBER` | Optional: WhatsApp number in intl. format, digits only (e.g. `919999999999`), used for the `wa.me` link. |
+| `NEXT_PUBLIC_WHATSAPP_NUMBER` | Optional: WhatsApp number, digits only (e.g. `919999999999`). |
 | `NEXT_PUBLIC_SITE_URL` | Canonical URL for metadata / Open Graph. |
 
-**Without `RESEND_API_KEY`:** in development the API logs the inquiry to the
-console and returns success (so you can exercise the UI); in production it
-returns an error. To actually receive emails, add a Resend key and verify a
-sending domain.
+**Without SMTP vars set:** the API logs the inquiry to the console and returns
+success, so the form UI is testable. Set the SMTP vars to actually send mail.
+
+For inbox deliverability of the auto-reply, make sure the domain's **SPF**,
+**DKIM** (added by Titan during mailbox setup) and a **DMARC** record are
+present in GoDaddy DNS.
 
 The WhatsApp button is a `wa.me` deep link built from `whatsappNumber` — update
 that value (or `NEXT_PUBLIC_WHATSAPP_NUMBER`) before launch.

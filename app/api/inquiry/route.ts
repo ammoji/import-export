@@ -1,15 +1,20 @@
 import { NextResponse } from "next/server";
-import { Resend } from "resend";
-import { company } from "@/config/site";
+import nodemailer from "nodemailer";
+import { company, whatsappLink } from "@/config/site";
 
 export const runtime = "nodejs";
+export const dynamic = "force-dynamic";
 
 interface InquiryPayload {
   fullName?: string;
   company?: string;
+  email?: string;
+  phone?: string;
   country?: string;
   product?: string;
   message?: string;
+  /** Honeypot — must stay empty. Bots tend to fill every field. */
+  website?: string;
 }
 
 function escapeHtml(s: string) {
@@ -20,6 +25,8 @@ function escapeHtml(s: string) {
     .replace(/"/g, "&quot;");
 }
 
+const isEmail = (s: string) => /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(s);
+
 export async function POST(req: Request) {
   let body: InquiryPayload;
   try {
@@ -28,29 +35,43 @@ export async function POST(req: Request) {
     return NextResponse.json({ error: "Invalid request body." }, { status: 400 });
   }
 
+  // Honeypot: silently accept (so bots don't retry) but do nothing.
+  if (body.website && body.website.trim() !== "") {
+    return NextResponse.json({ ok: true, delivered: false });
+  }
+
   const fullName = body.fullName?.trim();
+  const email = body.email?.trim();
   const country = body.country?.trim();
   const product = body.product?.trim();
   const message = body.message?.trim();
   const companyName = body.company?.trim() || "—";
+  const phone = body.phone?.trim() || "—";
 
-  // Server-side validation (mirrors the client).
-  if (!fullName || !country || !product || !message) {
+  if (!fullName || !email || !country || !product || !message) {
     return NextResponse.json(
       { error: "Please fill in all required fields." },
       { status: 400 }
     );
   }
+  if (!isEmail(email)) {
+    return NextResponse.json(
+      { error: "Please enter a valid email address." },
+      { status: 400 }
+    );
+  }
 
-  const to = process.env.CONTACT_EMAIL || company.email;
-  // Must be a verified sender/domain in Resend. Falls back to their sandbox.
-  const from = process.env.INQUIRY_FROM_EMAIL || "onboarding@resend.dev";
-  const apiKey = process.env.RESEND_API_KEY;
+  const host = process.env.SMTP_HOST;
+  const port = Number(process.env.SMTP_PORT || 465);
+  const user = process.env.SMTP_USER;
+  const pass = process.env.SMTP_PASS;
+  const to = process.env.CONTACT_EMAIL || user || company.email;
 
-  const subject = `New inquiry: ${product} — ${fullName}`;
-  const text = [
+  const summaryText = [
     `Name: ${fullName}`,
     `Company: ${companyName}`,
+    `Email: ${email}`,
+    `Phone: ${phone}`,
     `Country: ${country}`,
     `Product interest: ${product}`,
     "",
@@ -58,44 +79,94 @@ export async function POST(req: Request) {
     message,
   ].join("\n");
 
-  const html = `
-    <h2 style="font-family:sans-serif">New inquiry from ${company.name} website</h2>
-    <table style="font-family:sans-serif;font-size:14px;border-collapse:collapse">
-      <tr><td style="padding:4px 12px 4px 0"><strong>Name</strong></td><td>${escapeHtml(fullName)}</td></tr>
-      <tr><td style="padding:4px 12px 4px 0"><strong>Company</strong></td><td>${escapeHtml(companyName)}</td></tr>
-      <tr><td style="padding:4px 12px 4px 0"><strong>Country</strong></td><td>${escapeHtml(country)}</td></tr>
-      <tr><td style="padding:4px 12px 4px 0"><strong>Product interest</strong></td><td>${escapeHtml(product)}</td></tr>
-    </table>
-    <p style="font-family:sans-serif;font-size:14px;white-space:pre-wrap">${escapeHtml(message)}</p>
-  `;
-
-  // If email isn't configured yet, don't fail — log the inquiry and return
-  // success so the form is fully usable for review/testing. Set RESEND_API_KEY
-  // (see .env.example / README) before launch to actually deliver emails.
-  if (!apiKey) {
+  // If SMTP isn't configured yet, don't fail — log and return success so the
+  // UI is testable. Configure SMTP_* env vars (see .env.example) to send.
+  if (!host || !user || !pass) {
     console.warn(
-      "[inquiry] RESEND_API_KEY not set — inquiry NOT emailed (logged only). Payload:\n" +
-        text
+      "[inquiry] SMTP not configured — inquiry NOT emailed (logged only):\n" +
+        summaryText
     );
     return NextResponse.json({ ok: true, delivered: false });
   }
 
+  const transporter = nodemailer.createTransport({
+    host,
+    port,
+    secure: port === 465, // 465 = SSL, 587 = STARTTLS
+    auth: { user, pass },
+  });
+
+  const fromName = `${company.name} Website`;
+  const notifyHtml = `
+    <h2 style="font-family:sans-serif;margin:0 0 12px">New inquiry from the ${escapeHtml(
+      company.name
+    )} website</h2>
+    <table style="font-family:sans-serif;font-size:14px;border-collapse:collapse">
+      <tr><td style="padding:4px 12px 4px 0"><strong>Name</strong></td><td>${escapeHtml(fullName)}</td></tr>
+      <tr><td style="padding:4px 12px 4px 0"><strong>Company</strong></td><td>${escapeHtml(companyName)}</td></tr>
+      <tr><td style="padding:4px 12px 4px 0"><strong>Email</strong></td><td>${escapeHtml(email)}</td></tr>
+      <tr><td style="padding:4px 12px 4px 0"><strong>Phone</strong></td><td>${escapeHtml(phone)}</td></tr>
+      <tr><td style="padding:4px 12px 4px 0"><strong>Country</strong></td><td>${escapeHtml(country)}</td></tr>
+      <tr><td style="padding:4px 12px 4px 0"><strong>Product interest</strong></td><td>${escapeHtml(product)}</td></tr>
+    </table>
+    <p style="font-family:sans-serif;font-size:14px;white-space:pre-wrap;margin-top:12px">${escapeHtml(message)}</p>
+  `;
+
+  const replyHtml = `
+    <div style="font-family:sans-serif;font-size:14px;color:#14303F;line-height:1.6">
+      <p>Hi ${escapeHtml(fullName)},</p>
+      <p>Thank you for reaching out to <strong>${escapeHtml(company.name)}</strong>.
+      We've received your inquiry and our team will get back to you within one business day.</p>
+      <p><strong>Your inquiry</strong><br>
+      Product interest: ${escapeHtml(product)}<br>
+      Country: ${escapeHtml(country)}</p>
+      <p style="white-space:pre-wrap;color:#5B6B72">${escapeHtml(message)}</p>
+      <hr style="border:none;border-top:1px solid #E5EAE7;margin:16px 0">
+      <p style="color:#5B6B72">In the meantime, reach us anytime:<br>
+      Email: ${escapeHtml(company.email)}<br>
+      WhatsApp: ${escapeHtml(company.whatsappDisplay)} (${whatsappLink()})</p>
+      <p style="color:#5B6B72">— Team ${escapeHtml(company.name)}</p>
+    </div>
+  `;
+
   try {
-    const resend = new Resend(apiKey);
-    const { error } = await resend.emails.send({
-      from: `${company.name} Website <${from}>`,
+    // 1) Notification to the business (must succeed).
+    await transporter.sendMail({
+      from: `"${fromName}" <${user}>`,
       to,
-      subject,
-      text,
-      html,
+      replyTo: `"${fullName}" <${email}>`,
+      subject: `New inquiry: ${product} — ${fullName}`,
+      text: summaryText,
+      html: notifyHtml,
     });
-    if (error) {
-      console.error("[inquiry] Resend error:", error);
-      return NextResponse.json({ error: "Failed to send inquiry." }, { status: 502 });
-    }
-    return NextResponse.json({ ok: true, delivered: true });
   } catch (err) {
-    console.error("[inquiry] Unexpected error:", err);
-    return NextResponse.json({ error: "Failed to send inquiry." }, { status: 500 });
+    console.error("[inquiry] Failed to send notification:", err);
+    return NextResponse.json(
+      { error: "We couldn't send your inquiry. Please email us directly." },
+      { status: 502 }
+    );
   }
+
+  // 2) Auto-reply to the customer (best-effort — don't fail the request).
+  try {
+    await transporter.sendMail({
+      from: `"${company.name}" <${user}>`,
+      to: `"${fullName}" <${email}>`,
+      replyTo: company.email,
+      subject: `Thanks for your inquiry — ${company.name}`,
+      text:
+        `Hi ${fullName},\n\n` +
+        `Thank you for reaching out to ${company.name}. We've received your inquiry ` +
+        `and will get back to you within one business day.\n\n` +
+        `Product interest: ${product}\nCountry: ${country}\n\n` +
+        `${message}\n\n` +
+        `Email: ${company.email}\nWhatsApp: ${company.whatsappDisplay}\n\n` +
+        `— Team ${company.name}`,
+      html: replyHtml,
+    });
+  } catch (err) {
+    console.error("[inquiry] Auto-reply failed (notification still sent):", err);
+  }
+
+  return NextResponse.json({ ok: true, delivered: true });
 }
