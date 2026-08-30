@@ -94,6 +94,10 @@ export async function POST(req: Request) {
     port,
     secure: port === 465, // 465 = SSL, 587 = STARTTLS
     auth: { user, pass },
+    // Fail fast with a clear error instead of hanging the function.
+    connectionTimeout: 10000,
+    greetingTimeout: 10000,
+    socketTimeout: 20000,
   });
 
   const fromName = `${company.name} Website`;
@@ -140,9 +144,15 @@ export async function POST(req: Request) {
       html: notifyHtml,
     });
   } catch (err) {
-    console.error("[inquiry] Failed to send notification:", err);
+    const detail =
+      err instanceof Error ? `${(err as { code?: string }).code ?? ""} ${err.message}`.trim() : String(err);
+    console.error("[inquiry] Failed to send notification:", detail, err);
     return NextResponse.json(
-      { error: "We couldn't send your inquiry. Please email us directly." },
+      {
+        error: "We couldn't send your inquiry. Please email us directly.",
+        // Only exposed when INQUIRY_DEBUG=1 (set temporarily in Netlify env).
+        ...(process.env.INQUIRY_DEBUG === "1" ? { detail } : {}),
+      },
       { status: 502 }
     );
   }
