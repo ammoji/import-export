@@ -38,6 +38,7 @@ export default function InquiryForm({
     country: defaultCountry,
     countryOther: "",
     product: defaultInterest,
+    productOther: "",
     message: defaultProductName ? `I'm interested in ${defaultProductName}. ` : "",
     website: "", // honeypot — must stay empty
   });
@@ -59,6 +60,8 @@ export default function InquiryForm({
     if (values.country === OTHER && !values.countryOther.trim())
       next.countryOther = "Please enter your country.";
     if (!values.product) next.product = "Please select a product interest.";
+    if (values.product === OTHER && !values.productOther.trim())
+      next.productOther = "Please enter the product you're interested in.";
     if (!values.message.trim()) next.message = "Please tell us what you need.";
     setErrors(next);
     return Object.keys(next).length === 0;
@@ -72,6 +75,7 @@ export default function InquiryForm({
     const payload = {
       ...values,
       country: values.country === OTHER ? values.countryOther.trim() : values.country,
+      product: values.product === OTHER ? values.productOther.trim() : values.product,
     };
     try {
       const res = await fetch("/api/inquiry", {
@@ -85,7 +89,7 @@ export default function InquiryForm({
         type: "success",
         message: "Thanks — your inquiry has been sent. We'll reply within one business day.",
       });
-      setValues({ fullName: "", email: "", company: "", phone: "", country: "", countryOther: "", product: "", message: "", website: "" });
+      setValues({ fullName: "", email: "", company: "", phone: "", country: "", countryOther: "", product: "", productOther: "", message: "", website: "" });
     } catch (err) {
       setStatus({
         type: "error",
@@ -162,6 +166,7 @@ export default function InquiryForm({
             {categories.map((c) => (
               <option key={c.slug} value={c.name}>{c.name}</option>
             ))}
+            <option value={OTHER}>Others</option>
           </select>
           {errors.product && <p className="field-error">{errors.product}</p>}
         </div>
@@ -180,6 +185,22 @@ export default function InquiryForm({
             autoFocus
           />
           {errors.countryOther && <p className="field-error">{errors.countryOther}</p>}
+        </div>
+      )}
+
+      {values.product === OTHER && (
+        <div>
+          <label htmlFor="f-product-other">Please specify the product</label>
+          <input
+            id="f-product-other"
+            type="text"
+            placeholder="Which product are you interested in?"
+            value={values.productOther}
+            onChange={update("productOther")}
+            aria-invalid={!!errors.productOther}
+            autoFocus
+          />
+          {errors.productOther && <p className="field-error">{errors.productOther}</p>}
         </div>
       )}
 
