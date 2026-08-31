@@ -44,13 +44,13 @@ export default function QuoteSection({
                   <div className="val">{company.whatsappDisplay}</div>
                 </div>
               </a>
-              <div className="channel">
+              <a className="channel" href={`tel:+${company.whatsappNumber}`}>
                 <div className="ic"><Icon name="phone" /></div>
                 <div>
                   <div className="lbl">Phone</div>
                   <div className="val">{company.phoneDisplay}</div>
                 </div>
-              </div>
+              </a>
             </div>
           </div>
           <div className="card-form">

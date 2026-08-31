@@ -158,6 +158,21 @@ export default function InquiryForm({
             <option value={OTHER}>Others</option>
           </select>
           {errors.country && <p className="field-error">{errors.country}</p>}
+          {values.country === OTHER && (
+            <div style={{ marginTop: "0.75rem" }}>
+              <label htmlFor="f-country-other">Please specify your country</label>
+              <input
+                id="f-country-other"
+                type="text"
+                placeholder="Enter your country"
+                value={values.countryOther}
+                onChange={update("countryOther")}
+                aria-invalid={!!errors.countryOther}
+                autoFocus
+              />
+              {errors.countryOther && <p className="field-error">{errors.countryOther}</p>}
+            </div>
+          )}
         </div>
         <div>
           <label htmlFor="f-product">Product interest</label>
@@ -169,40 +184,23 @@ export default function InquiryForm({
             <option value={OTHER}>Others</option>
           </select>
           {errors.product && <p className="field-error">{errors.product}</p>}
+          {values.product === OTHER && (
+            <div style={{ marginTop: "0.75rem" }}>
+              <label htmlFor="f-product-other">Please specify the product</label>
+              <input
+                id="f-product-other"
+                type="text"
+                placeholder="Which product are you interested in?"
+                value={values.productOther}
+                onChange={update("productOther")}
+                aria-invalid={!!errors.productOther}
+                autoFocus
+              />
+              {errors.productOther && <p className="field-error">{errors.productOther}</p>}
+            </div>
+          )}
         </div>
       </div>
-
-      {values.country === OTHER && (
-        <div>
-          <label htmlFor="f-country-other">Please specify your country</label>
-          <input
-            id="f-country-other"
-            type="text"
-            placeholder="Enter your country"
-            value={values.countryOther}
-            onChange={update("countryOther")}
-            aria-invalid={!!errors.countryOther}
-            autoFocus
-          />
-          {errors.countryOther && <p className="field-error">{errors.countryOther}</p>}
-        </div>
-      )}
-
-      {values.product === OTHER && (
-        <div>
-          <label htmlFor="f-product-other">Please specify the product</label>
-          <input
-            id="f-product-other"
-            type="text"
-            placeholder="Which product are you interested in?"
-            value={values.productOther}
-            onChange={update("productOther")}
-            aria-invalid={!!errors.productOther}
-            autoFocus
-          />
-          {errors.productOther && <p className="field-error">{errors.productOther}</p>}
-        </div>
-      )}
 
       <div>
         <label htmlFor="f-message">Message</label>
