@@ -178,5 +178,32 @@ export async function POST(req: Request) {
     console.error("[inquiry] Auto-reply failed (notification still sent):", err);
   }
 
+  // 3) WhatsApp notification via CallMeBot (best-effort).
+  //    One-time setup: https://www.callmebot.com/blog/free-api-whatsapp-messages/
+  //    Set WA_CALLMEBOT_KEY in env vars once you have the API key.
+  const waKey = process.env.WA_CALLMEBOT_KEY;
+  if (waKey) {
+    const waPhone = `+${company.whatsappNumber}`;
+    const waText = [
+      `New inquiry - ${company.name}`,
+      `Name: ${fullName}`,
+      `Email: ${email}`,
+      `Phone: ${phone}`,
+      `Country: ${country}`,
+      `Product: ${product}`,
+      `Message: ${message}`,
+    ].join("\n");
+    try {
+      const waUrl =
+        `https://api.callmebot.com/whatsapp.php` +
+        `?phone=${encodeURIComponent(waPhone)}` +
+        `&text=${encodeURIComponent(waText)}` +
+        `&apikey=${waKey}`;
+      await fetch(waUrl, { signal: AbortSignal.timeout(8000) });
+    } catch (err) {
+      console.error("[inquiry] WhatsApp notification failed (non-fatal):", err);
+    }
+  }
+
   return NextResponse.json({ ok: true, delivered: true });
 }
